@@ -1,0 +1,22 @@
+- name: Configure server for metrics
+  hosts: "{{ hostvar|default([]) }}"
+  gather_facts: false
+  become: true
+
+  tasks:
+    - name: windows_exporter role
+      import_role:
+        name: windows_exporter
+
+- name: Add target to prometheus server
+  hosts: grafana.local.lan
+  gather_facts: false
+  become_user: poduser
+  become_method: sudo
+
+  tasks:
+
+    - name: prometheus_target_update_win role
+      import_role:
+        name: prometheus_target_update_win
+
