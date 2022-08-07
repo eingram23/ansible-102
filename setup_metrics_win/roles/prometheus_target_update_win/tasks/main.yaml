@@ -1,8 +1,0 @@
----
-- name: Add entry to prometheus.yml
-  ansible.builtin.lineinfile:
-    path: /opt/prometheus/prometheus.yml
-    insertafter: '      - targets: \[''localhost:9100''\]'
-    regexp: '      - targets: \[''{{hostvar}}:9182''\]'
-    line: "      - targets: ['{{hostvar}}:9182']"
-  notify: Restart prometheus container

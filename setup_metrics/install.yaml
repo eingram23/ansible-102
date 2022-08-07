@@ -1,0 +1,50 @@
+- name: Configure server for metrics
+  hosts: "{{ hostvar|default([]) }}"
+  gather_facts: true
+  become: true
+
+  tasks:
+
+    - name: Create dummy host to store os_family
+      ansible.builtin.add_host:
+        name: "DUMMY"
+        host_os: "{{ ansible_facts['os_family'] }}"
+        host_name: "{{ inventory_hostname }}"
+
+    - name: Import role to install prometheus agent (Windows)
+      import_role:  
+        name: install_windows_exporter
+      when: ansible_facts['os_family'] == "Windows"
+
+    - name: Import role to install prometheus agent (RedHat)
+      import_role:  
+        name: install_node_exporter
+      when: ansible_facts['os_family'] == "RedHat"
+
+- name: Add target to prometheus server
+  hosts: grafana.local.lan
+  gather_facts: false
+  become_user: poduser
+  become_method: sudo
+
+  tasks:
+
+    - name: Import role to update prometheus targets (Windows)
+      import_role:
+        name: update_prometheus
+      vars:
+        target_port: 9182
+      when: hostvars['DUMMY']['host_os'] == 'Windows'
+
+    - name: Import role to update prometheus targets (RedHat)
+      import_role:
+        name: update_prometheus
+      vars:
+        target_port: 9100
+      when: hostvars['DUMMY']['host_os'] == 'RedHat'
+          
+
+
+
+
+

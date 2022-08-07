@@ -1,0 +1,4 @@
+---
+- name: Output value of role2_var
+  ansible.builtin.debug:
+    var: role2_var

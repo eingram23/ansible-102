@@ -1,0 +1,24 @@
+---
+- name: Test var on first host
+  hosts: rocky1.local.lan
+  become: false
+  gather_facts: false
+  vars:
+    test_var: test
+
+  tasks:
+
+  - name: Debug host1
+    debug:
+      var: test_var
+
+- name: Test var on second host
+  hosts: wincore1.local.lan
+  become: false
+  gather_facts: false
+
+  tasks:
+
+    - name: Debug host2
+      debug:
+        var: test_var
