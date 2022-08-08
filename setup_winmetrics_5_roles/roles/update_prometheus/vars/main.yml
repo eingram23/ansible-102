@@ -1,2 +1,3 @@
 ---
 # vars file for update_prometheus
+prom_port: 9182

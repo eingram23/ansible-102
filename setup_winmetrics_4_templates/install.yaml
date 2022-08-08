@@ -2,9 +2,12 @@
   hosts: "{{ hostvar|default([]) }}"
   gather_facts: false
   become: true
+  become_method: runas
 
   vars:
     msi_file: windows_exporter-0.19.0-amd64.msi
+    
+    ## These vars used for templates
     collectors:
       - cpu
       - cs
@@ -14,6 +17,7 @@
       - net
       - service
     log_level: warn
+    ## End template vars
 
   tasks:
 
@@ -70,19 +74,20 @@
   become_user: poduser
   become_method: sudo
 
+  vars:
+    prom_port: 9182
+
   tasks:
 
     - name: Add entry to prometheus.yml
       ansible.builtin.lineinfile:
         path: /opt/prometheus/prometheus.yml
         insertafter: '      - targets: \[''localhost:9100''\]'
-        regexp: '      - targets: \[''{{ hostvar }}:9182''\]'
-        line: "      - targets: ['{{ hostvar }}:9182']"
-      ## Added notify ##
+        regexp: '      - targets: \[''{{ hostvar }}:{{ prom_port }}''\]'
+        line: "      - targets: ['{{ hostvar }}:{{ prom_port }}']"
       notify:
         - Restart prometheus container
   
-  ## Added handler##
   handlers:
 
     - name: Restart prometheus container

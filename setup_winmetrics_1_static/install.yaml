@@ -2,6 +2,7 @@
   hosts: wincore1.local.lan
   gather_facts: false
   become: true
+  become_method: runas
 
   tasks:
 

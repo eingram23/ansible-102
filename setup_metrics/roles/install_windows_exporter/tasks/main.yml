@@ -5,11 +5,6 @@
     path: C:\Program Files\windows_exporter
     state: directory
 
-# - name: Copy config file  
-#   ansible.windows.win_copy:
-#     src: config.yml
-#     dest: C:\Program Files\windows_exporter\config.yml
-
 - name: Use templating to create config file on remote host
   ansible.builtin.template:
     src: config.yml.j2

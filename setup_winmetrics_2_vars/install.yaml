@@ -2,11 +2,11 @@
   hosts: "{{ hostvar }}"
   gather_facts: false
   become: true
+  become_method: runas
 
   # Added vars in playbook
   vars:
     msi_file: windows_exporter-0.19.0-amd64.msi
-    port: 9182
 
   tasks:
 
@@ -49,14 +49,17 @@
   become_user: poduser
   become_method: sudo
 
+  vars:
+    prom_port: 9182
+    
   tasks:
 
     - name: Add entry to prometheus.yml
       ansible.builtin.lineinfile:
         path: /opt/prometheus/prometheus.yml
         insertafter: '      - targets: \[''localhost:9100''\]'
-        regexp: '      - targets: \[''{{ hostvar }}:{{ port }}''\]'
-        line: "      - targets: ['{{ hostvar }}:{{ port }}']"
+        regexp: '      - targets: \[''{{ hostvar }}:{{ prom_port }}''\]'
+        line: "      - targets: ['{{ hostvar }}:{{ prom_port }}']"
 
     - name: Restart prometheus container
       containers.podman.podman_container:

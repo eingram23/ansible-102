@@ -4,8 +4,7 @@
   ansible.builtin.lineinfile:
     path: /opt/prometheus/prometheus.yml
     insertafter: '      - targets: \[''localhost:9100''\]'
-    regexp: '      - targets: \[''{{ hostvar }}:9182''\]'
-    line: "      - targets: ['{{ hostvar }}:9182']"
-  ## Added notify ##
+    regexp: '      - targets: \[''{{ hostvar }}:{{ prom_port }}''\]'
+    line: "      - targets: ['{{ hostvar }}:{{ prom_port }}']"
   notify:
     - Restart prometheus container

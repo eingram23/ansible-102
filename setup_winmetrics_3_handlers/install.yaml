@@ -2,6 +2,7 @@
   hosts: "{{ hostvar|default([]) }}"
   gather_facts: false
   become: true
+  become_method: runas
 
   vars:
     msi_file: windows_exporter-0.19.0-amd64.msi
@@ -59,14 +60,17 @@
   become_user: poduser
   become_method: sudo
 
+  vars:
+    prom_port: 9182
+
   tasks:
 
     - name: Add entry to prometheus.yml
       ansible.builtin.lineinfile:
         path: /opt/prometheus/prometheus.yml
         insertafter: '      - targets: \[''localhost:9100''\]'
-        regexp: '      - targets: \[''{{ hostvar }}:9182''\]'
-        line: "      - targets: ['{{ hostvar }}:9182']"
+        regexp: '      - targets: \[''{{ hostvar }}:{{ prom_port }}''\]'
+        line: "      - targets: ['{{ hostvar }}:{{ prom_port }}']"
       ## ADDED NOTIFY FOR SECOND PLAY ##
       notify:
         - Restart prometheus container

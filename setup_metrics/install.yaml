@@ -2,6 +2,7 @@
   hosts: "{{ hostvar|default([]) }}"
   gather_facts: true
   become: true
+  # become_method: runas
 
   tasks:
 

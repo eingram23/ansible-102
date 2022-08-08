@@ -2,6 +2,7 @@
   hosts: "{{ hostvar|default([]) }}"
   gather_facts: false
   become: true
+  become_method: runas
 
   roles:  
     - install_windows_exporter
