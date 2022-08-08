@@ -8,5 +8,5 @@ collectors:
   - os
   - system
   - net
-  # - service
+  - service
 log_level: warn
