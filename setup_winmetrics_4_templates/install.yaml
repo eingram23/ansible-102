@@ -7,7 +7,6 @@
   vars:
     msi_file: windows_exporter-0.19.0-amd64.msi
     
-    ## These vars used for templates
     collectors:
       - cpu
       - cs
@@ -17,7 +16,6 @@
       - net
       - service
     log_level: warn
-    ## End template vars
 
   tasks:
 

@@ -1,10 +1,11 @@
 - name: Configure server for metrics
-  hosts: "{{ hostvar }}"
+  # Use hostvar to specify host(s) to run against from command line
+  hosts: "{{ hostvar|default([]) }}"
   gather_facts: false
   become: true
   become_method: runas
 
-  # Added vars in playbook
+  # Added vars in play
   vars:
     msi_file: windows_exporter-0.19.0-amd64.msi
 
@@ -49,6 +50,7 @@
   become_user: poduser
   become_method: sudo
 
+  # Added vars in play
   vars:
     prom_port: 9182
     
