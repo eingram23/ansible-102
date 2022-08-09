@@ -1,8 +1,0 @@
-collectors:
-  enabled: {{ collectors|join(',') }}
-collector:
-  service:
-    services-where: "Name='windows_exporter'"
-log:
-  level: {{ log_level }}
-  
