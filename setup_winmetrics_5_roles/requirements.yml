@@ -1,0 +1,5 @@
+---    
+- src: https://github.com/eingram23/ansible-role-windows_exporter.git
+  name: install_windows_exporter
+- src: https://github.com/eingram23/ansible-role-prometheus_target_update_win.git
+  name: update_prometheus
